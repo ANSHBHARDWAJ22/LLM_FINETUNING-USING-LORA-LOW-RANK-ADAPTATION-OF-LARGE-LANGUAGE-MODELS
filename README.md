@@ -1,6 +1,6 @@
-# 🔍 Low-Rank Adaptation (LoRA)
+#  Low-Rank Adaptation (LoRA)
 
-## 🧠 Motivation
+##  Motivation
 
 Large pre-trained language models like GPT, BERT, etc., contain billions of parameters and require massive compute and memory for fine-tuning on downstream tasks. Traditional full fine-tuning involves updating all parameters, which is inefficient, memory-intensive, and impractical for resource-constrained setups.
 
@@ -8,11 +8,11 @@ Large pre-trained language models like GPT, BERT, etc., contain billions of para
 
 ---
 
-## ⚙️ Core Idea
+##  Core Idea
 
 LoRA assumes that the required updates to a pre-trained model’s weights during fine-tuning lie in a low-dimensional subspace. Hence, instead of full-rank updates, LoRA adds a **low-rank decomposition** to the weight matrices.
 
-### 🔢 Mathematical Formulation
+###  Mathematical Formulation
 
 Let `W₀ ∈ ℝ^(d×k)` be a pre-trained weight matrix. LoRA modifies it as follows:
 
@@ -33,7 +33,7 @@ Optionally, this is scaled by a factor `α / r` to control update magnitude.
 
 ---
 
-## 🧪 Application to Transformers
+##  Application to Transformers
 
 In Transformer architectures, LoRA is applied to the weight matrices inside self-attention modules:
 
@@ -43,20 +43,20 @@ In most setups, LoRA is used only on the `Wq` and `Wv` matrices for simplicity a
 
 ---
 
-## ✅ Benefits of LoRA
+##  Benefits of LoRA
 
-- 🔋 **Memory Efficient**: Reduces GPU VRAM usage drastically. (e.g., GPT-3 175B fine-tuning VRAM drops from 1.2TB to 350GB)
-- 💾 **Smaller Checkpoints**: Checkpoint size reduced by 10,000× (e.g., from 350GB to 35MB with r = 4)
-- 🚀 **Faster Training**: 25% speedup in training due to fewer parameters being updated
-- 🔄 **Flexible Deployment**: Easily switch between tasks by swapping LoRA weights (A, B), while the base model remains constant
-- ⚡ **No Additional Inference Latency**: Can merge `W₀ + ΔW` after training for efficient inference
+-  **Memory Efficient**: Reduces GPU VRAM usage drastically. (e.g., GPT-3 175B fine-tuning VRAM drops from 1.2TB to 350GB)
+-  **Smaller Checkpoints**: Checkpoint size reduced by 10,000× (e.g., from 350GB to 35MB with r = 4)
+-  **Faster Training**: 25% speedup in training due to fewer parameters being updated
+-  **Flexible Deployment**: Easily switch between tasks by swapping LoRA weights (A, B), while the base model remains constant
+-  **No Additional Inference Latency**: Can merge `W₀ + ΔW` after training for efficient inference
 
 ---
 
-## ⚠️ Limitations
+##  Limitations
 
-- ❌ Not ideal for batching multiple tasks with different LoRA modules in the same forward pass
-- 🔄 If weights are merged (for zero-latency inference), task switching requires explicit unmerging and re-merging
+-  Not ideal for batching multiple tasks with different LoRA modules in the same forward pass
+-  If weights are merged (for zero-latency inference), task switching requires explicit unmerging and re-merging
 
 ---
 
